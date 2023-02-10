@@ -10,7 +10,7 @@ export const userRouter = router({
     .input(z.string())
     .output(z.object({ name: z.string(), email: z.string().email() }))
     .mutation((req) => {
-      emitter.emit("userUpdate", req.input)
+      emitter.emit("userUpdate", `subscription: ${req.input}`)
       return {
         name: req.input,
         email: "dev@dev.com",

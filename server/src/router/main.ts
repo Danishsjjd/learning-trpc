@@ -1,5 +1,6 @@
 import { z } from "zod"
 import { adminProcedure, router } from "../trpc"
+import { userRouter } from "./user"
 
 export const appRouter = router({
   adminRoute: adminProcedure.input(z.string()).query((req) => {
@@ -12,7 +13,7 @@ export const appRouter = router({
 
     return `Hello!, Admin ${input}`
   }),
-  // users: userRouter,
+  users: userRouter,
 })
 
 export type AppRouter = typeof appRouter

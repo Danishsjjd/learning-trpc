@@ -1,11 +1,32 @@
 import { trpc } from "./utils/trpc"
+
 const Client = () => {
-  const hello = trpc.adminRoute.useQuery("hello")
-  if (!hello.data) return <div>Loading...</div>
+  const { mutate } = trpc.users.update.useMutation()
+  const hello = trpc.adminRoute.useQuery("hello", {})
+
+  trpc.users.onUpdate.useSubscription(undefined, {
+    onData(data) {
+      console.log("on data", data)
+    },
+  })
 
   console.log(hello.data)
 
-  return <div>Client</div>
+  const updateUserHandler = () => {
+    mutate("danish")
+  }
+
+  return (
+    <div
+      style={{
+        width: "100vw",
+        height: "100vh",
+        background: "black",
+        color: "white",
+      }}
+      onClick={updateUserHandler}
+    />
+  )
 }
 
 export default Client
