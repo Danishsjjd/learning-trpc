@@ -1,8 +1,14 @@
-import { httpBatchLink, createTRPCProxyClient } from "@trpc/client"
+import {
+  httpBatchLink,
+  createTRPCProxyClient,
+  TRPCClientError,
+  loggerLink,
+} from "@trpc/client"
 import { AppRouter } from "../server/src/router/main"
 
 const client = createTRPCProxyClient<AppRouter>({
   links: [
+    loggerLink(),
     httpBatchLink({
       url: "http://localhost:3000",
     }),
@@ -10,8 +16,12 @@ const client = createTRPCProxyClient<AppRouter>({
 })
 
 async function main() {
-  const res = await client.hello.query("danish")
+  const res = await client.adminRoute.query("Danish", {
+    context: { isAdmin: true },
+  })
   console.log(res)
 }
 
-main()
+main().catch((err: TRPCClientError<AppRouter>) => {
+  console.log(err)
+})
