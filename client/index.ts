@@ -16,10 +16,7 @@ const client = createTRPCProxyClient<AppRouter>({
 })
 
 async function main() {
-  const res = await client.adminRoute.query("Danish", {
-    context: { isAdmin: true },
-  })
-  console.log(res)
+  await client.adminRoute.query("Danish")
 }
 
 main().catch((err: TRPCClientError<AppRouter>) => {

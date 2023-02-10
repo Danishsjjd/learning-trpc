@@ -1,11 +1,17 @@
-import { inferAsyncReturnType, initTRPC } from "@trpc/server"
+import { inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server"
 import createContext from "./context"
 
-const t = initTRPC
+export const t = initTRPC
   .context<inferAsyncReturnType<typeof createContext>>()
   .create()
+
+export const isAdmin = t.middleware(({ next, ctx }) => {
+  if (!ctx.isAdmin) throw new TRPCError({ code: "UNAUTHORIZED" })
+
+  return next({ ctx: { userId: 1 } })
+})
 
 export const router = t.router
 export const procedure = t.procedure
 
-export default t
+export const adminProcedure = t.procedure.use(isAdmin)
