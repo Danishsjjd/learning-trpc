@@ -5,6 +5,7 @@ export const t = initTRPC
   .context<inferAsyncReturnType<typeof createContext>>()
   .create()
 
+// ! middleware must create after instance of initTRPC.create()
 export const isAdmin = t.middleware(({ next, ctx }) => {
   if (!ctx.isAdmin) throw new TRPCError({ code: "UNAUTHORIZED" })
 

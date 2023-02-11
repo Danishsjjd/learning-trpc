@@ -1,5 +1,5 @@
 // import { CreateExpressContextOptions } from "@trpc/server/adapters/express"
 
-const createContext = () => ({ isAdmin: true })
+const createContext = () => ({ isAdmin: false })
 
 export default createContext
